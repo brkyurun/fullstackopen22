@@ -1,0 +1,1 @@
+![Diagram demonstrating the events that happen on an SPA when the user enters new data to be saved on the server](new-note-spa-diagram.png "Diagram demonstrating the events that happen on an SPA when the user enters new data to be saved on the server")
