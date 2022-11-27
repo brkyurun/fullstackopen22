@@ -20,7 +20,7 @@ const Button = ({ onClick, content }) => {
   );
 };
 
-const Rating = ({ rating, count }) => {
+const Content = ({ text, count }) => {
   return (
     <p
       style={{
@@ -29,7 +29,7 @@ const Rating = ({ rating, count }) => {
         margin: ".25rem 0",
       }}
     >
-      {rating} : {count}
+      {text} : {count}
     </p>
   );
 };
@@ -38,9 +38,22 @@ function App() {
   const [good, setGood] = useState(0);
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
+  const [average, setAverage] = useState(0);
+  const [positiveRating, setPositiveRating] = useState(0);
 
-  const handleClickFactory = (state, stateSetter) => () =>
+  const calculateAverage = () => {
+    setAverage((good - bad) / (good + neutral + bad));
+  };
+
+  const calculatePositiveRating = () => {
+    setPositiveRating((good / (good + neutral + bad)) * 100);
+  };
+
+  const handleClickFactory = (state, stateSetter) => () => {
     stateSetter(state + 1);
+    calculateAverage();
+    calculatePositiveRating();
+  };
 
   return (
     <div>
@@ -53,9 +66,12 @@ function App() {
         />
         <Button onClick={handleClickFactory(bad, setBad)} content="Bad" />
       </div>
-      <Rating rating="good" count={good} />
-      <Rating rating="neutral" count={neutral} />
-      <Rating rating="bad" count={bad} />
+      <Content text="good" count={good} />
+      <Content text="neutral" count={neutral} />
+      <Content text="bad" count={bad} />
+      <Content text="total votes" count={good + neutral + bad} />
+      <Content text="average" count={average} />
+      <Content text="positive rating percentage" count={positiveRating} />
     </div>
   );
 }
