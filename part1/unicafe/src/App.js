@@ -34,6 +34,31 @@ const Content = ({ text, count }) => {
   );
 };
 
+const Statistics = ({ average, positiveRating }) => {
+  return (
+    <div>
+      <p
+        style={{
+          fontSize: "1.125rem",
+          fontFamily: "sans-serif",
+          margin: ".25rem 0",
+        }}
+      >
+        average: {average}
+      </p>
+      <p
+        style={{
+          fontSize: "1.125rem",
+          fontFamily: "sans-serif",
+          margin: ".25rem 0",
+        }}
+      >
+        positive rating: {positiveRating}
+      </p>
+    </div>
+  );
+};
+
 function App() {
   const [good, setGood] = useState(0);
   const [neutral, setNeutral] = useState(0);
@@ -70,8 +95,7 @@ function App() {
       <Content text="neutral" count={neutral} />
       <Content text="bad" count={bad} />
       <Content text="total votes" count={good + neutral + bad} />
-      <Content text="average" count={average} />
-      <Content text="positive rating percentage" count={positiveRating} />
+      <Statistics average={average} positiveRating={positiveRating} />
     </div>
   );
 }
