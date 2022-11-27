@@ -20,7 +20,7 @@ const Button = ({ onClick, content }) => {
   );
 };
 
-const Content = ({ text, count }) => {
+const StatisticLine = ({ text, count }) => {
   return (
     <p
       style={{
@@ -34,12 +34,26 @@ const Content = ({ text, count }) => {
   );
 };
 
-const Statistics = ({ average, positiveRating }) => {
-  if (average === 0 || positiveRating === 0) {
-    return <div>No votes cast yet!</div>;
+const Statistics = ({ good, neutral, bad, average, positiveRating }) => {
+  const total = good + neutral + bad;
+
+  if (total === 0 && (average === 0 || positiveRating === 0)) {
+    return (
+      <div>
+        <StatisticLine text="good" count={good} />
+        <StatisticLine text="neutral" count={neutral} />
+        <StatisticLine text="bad" count={bad} />
+        <StatisticLine text="total votes" count={total} />
+        <p>No votes cast yet!</p>
+      </div>
+    );
   }
   return (
     <div>
+      <StatisticLine text="good" count={good} />
+      <StatisticLine text="neutral" count={neutral} />
+      <StatisticLine text="bad" count={bad} />
+      <StatisticLine text="total votes" count={total} />
       <p
         style={{
           fontSize: "1.125rem",
@@ -94,11 +108,13 @@ function App() {
         />
         <Button onClick={handleClickFactory(bad, setBad)} content="Bad" />
       </div>
-      <Content text="good" count={good} />
-      <Content text="neutral" count={neutral} />
-      <Content text="bad" count={bad} />
-      <Content text="total votes" count={good + neutral + bad} />
-      <Statistics average={average} positiveRating={positiveRating} />
+      <Statistics
+        good={good}
+        neutral={neutral}
+        bad={bad}
+        average={average}
+        positiveRating={positiveRating}
+      />
     </div>
   );
 }
