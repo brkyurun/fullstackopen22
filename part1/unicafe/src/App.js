@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 
 const Button = ({ onClick, content }) => {
   return (
@@ -22,15 +22,9 @@ const Button = ({ onClick, content }) => {
 
 const StatisticLine = ({ text, count }) => {
   return (
-    <p
-      style={{
-        fontSize: "1.125rem",
-        fontFamily: "sans-serif",
-        margin: ".25rem 0",
-      }}
-    >
+    <>
       {text} : {count}
-    </p>
+    </>
   );
 };
 
@@ -39,40 +33,72 @@ const Statistics = ({ good, neutral, bad, average, positiveRating }) => {
 
   if (total === 0 && (average === 0 || positiveRating === 0)) {
     return (
-      <div>
-        <StatisticLine text="good" count={good} />
-        <StatisticLine text="neutral" count={neutral} />
-        <StatisticLine text="bad" count={bad} />
-        <StatisticLine text="total votes" count={total} />
+      <>
+        <table>
+          <tbody>
+            <tr>
+              <td>
+                <StatisticLine text="good" count={good} />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <StatisticLine text="neutral" count={neutral} />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <StatisticLine text="bad" count={bad} />
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <StatisticLine text="total votes" count={total} />
+              </td>
+            </tr>
+          </tbody>
+        </table>
         <p>No votes cast yet!</p>
-      </div>
+      </>
     );
   }
   return (
-    <div>
-      <StatisticLine text="good" count={good} />
-      <StatisticLine text="neutral" count={neutral} />
-      <StatisticLine text="bad" count={bad} />
-      <StatisticLine text="total votes" count={total} />
-      <p
-        style={{
-          fontSize: "1.125rem",
-          fontFamily: "sans-serif",
-          margin: ".25rem 0",
-        }}
-      >
-        average: {average}
-      </p>
-      <p
-        style={{
-          fontSize: "1.125rem",
-          fontFamily: "sans-serif",
-          margin: ".25rem 0",
-        }}
-      >
-        positive rating: {positiveRating}
-      </p>
-    </div>
+    <>
+      <table>
+        <tbody>
+          <tr>
+            <td>
+              <StatisticLine text="good" count={good} />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <StatisticLine text="neutral" count={neutral} />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <StatisticLine text="bad" count={bad} />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <StatisticLine text="total votes" count={total} />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <StatisticLine text="average" count={average} />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <StatisticLine text="positive ratings" count={positiveRating} />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </>
   );
 };
 
