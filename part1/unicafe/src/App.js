@@ -35,6 +35,9 @@ const Content = ({ text, count }) => {
 };
 
 const Statistics = ({ average, positiveRating }) => {
+  if (average === 0 || positiveRating === 0) {
+    return <div>No votes cast yet!</div>;
+  }
   return (
     <div>
       <p
