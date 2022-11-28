@@ -13,12 +13,12 @@ const App = () => {
 
   const [selected, setSelected] = useState(0);
   const [votes, setVotes] = useState(Array(7).fill(0));
+  const [mostLiked, setMostLiked] = useState(0);
 
   const handleVote = () => {
     const copy = [...votes];
     copy[selected] += 1;
     setVotes(copy);
-    console.log(copy);
   };
 
   const handleRandomAnecdote = () => {
@@ -26,12 +26,33 @@ const App = () => {
     setSelected(random);
   };
 
+  const handleMostLiked = () => {
+    const mostVoted = Math.max(...votes);
+    const indexMostLiked = votes.indexOf(mostVoted);
+    setMostLiked(indexMostLiked);
+  };
+
   return (
     <div>
-      <div>{anecdotes[selected]}</div>
-      <div>has {votes[selected]} votes</div>
-      <button onClick={handleVote}>Like!</button>
-      <button onClick={handleRandomAnecdote}>See another!</button>
+      <div>
+        <h1>Anecdote of the day</h1>
+        <div>{anecdotes[selected]}</div>
+        <div>has {votes[selected]} votes</div>
+        <button
+          onClick={() => {
+            handleVote();
+            handleMostLiked();
+          }}
+        >
+          Like!
+        </button>
+        <button onClick={handleRandomAnecdote}>See another!</button>
+      </div>
+      <div>
+        <h2>Anecdote with most votes</h2>
+        <div>{anecdotes[mostLiked]}</div>
+        <div>has {votes[mostLiked]} votes</div>
+      </div>
     </div>
   );
 };
