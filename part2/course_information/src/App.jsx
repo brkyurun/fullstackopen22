@@ -1,6 +1,12 @@
 const Header = ({ course }) => <h1>{course.name}</h1>;
 
-const Total = ({ sum }) => <p>Number of exercises {sum}</p>;
+const Total = ({ course }) => {
+  const numbers = course.parts.map((part) => part.exercises);
+  const total = numbers.reduce((prev, curr) => {
+    return prev + curr;
+  });
+  return <p>total of {total} exercises</p>;
+};
 
 const Part = ({ part }) => (
   <p>
@@ -21,6 +27,7 @@ const Course = ({ course }) => {
     <div>
       <Header course={course} />
       <Content parts={course.parts} />
+      <Total course={course} />
     </div>
   );
 };
@@ -44,6 +51,11 @@ const App = () => {
         name: "State of a component",
         exercises: 14,
         id: 3,
+      },
+      {
+        name: "Redux",
+        exercises: 11,
+        id: 4,
       },
     ],
   };
