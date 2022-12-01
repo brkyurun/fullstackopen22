@@ -11,6 +11,9 @@ fullstackopen22
 │   ├── 0.5_single_page_app
 │   ├── 0.6_new_note
 ├── part1
+│   ├── anecdotes
+│   ├── course_information
+│   ├── unicafe
 ├── part2
 ├── part3
 ├── part4
