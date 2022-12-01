@@ -2,10 +2,23 @@ import { useState } from "react";
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: "Arto Hellas", number: "+90 546 845 76 73" },
+    { name: "Arto Hellas", number: "040-123456", id: 1 },
+    { name: "Ada Lovelace", number: "39-44-5323523", id: 2 },
+    { name: "Dan Abramov", number: "12-43-234345", id: 3 },
+    { name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
   ]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
+  const [filter, setFilter] = useState("");
+  const [filtered, setFiltered] = useState([]);
+
+  const handleFilterChange = (e) => {
+    setFilter(e.target.value);
+    const filteredNames = persons.filter((person) =>
+      person.name.toLowerCase().startsWith(e.target.value)
+    );
+    setFiltered(filteredNames);
+  };
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -19,6 +32,7 @@ const App = () => {
     const newPerson = {
       name: newName,
       number: newNumber,
+      id: persons.length + 1,
     };
     setPersons(persons.concat(newPerson));
     setNewName("");
@@ -33,9 +47,25 @@ const App = () => {
     setNewNumber(e.target.value);
   };
 
+  const unfilteredPeople = persons.map((person) => (
+    <div key={person.id}>
+      {person.name}: {person.number}
+    </div>
+  ));
+
+  const filteredPeople = filtered.map((person) => (
+    <div key={person.id}>
+      {person.name}: {person.number}
+    </div>
+  ));
+
   return (
     <div>
       <h2>Phonebook</h2>
+      <div>
+        filter: <input onChange={handleFilterChange} />
+      </div>
+      <h2>Add a new</h2>
       <form onSubmit={handleFormSubmit}>
         <div>
           name: <input value={newName} onChange={handleNameChange} />
@@ -48,11 +78,7 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      {persons.map((person) => (
-        <div key={person.name}>
-          {person.name}: {person.number}
-        </div>
-      ))}
+      {filter !== "" ? filteredPeople : unfilteredPeople}
     </div>
   );
 };
