@@ -6,6 +6,13 @@ const App = () => {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
+
+    const nameExists = persons.some((person) => person.name === newName);
+    if (nameExists) {
+      alert(`${newName} already exists!`);
+      return;
+    }
+
     const newPerson = {
       name: newName,
     };
