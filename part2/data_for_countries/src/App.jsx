@@ -21,6 +21,33 @@ const CountryDetail = ({ country }) => {
   );
 };
 
+const CountryWithButton = ({ country }) => {
+  const [showCountry, setShowCountry] = useState(false);
+
+  const handleClick = () => {
+    setShowCountry(!showCountry);
+  };
+
+  return (
+    <div>
+      <p
+        key={country.name.common}
+        style={{ display: "inline-block", marginRight: ".5rem" }}
+      >
+        {country.name.common}
+      </p>
+      <button
+        type="button"
+        style={{ display: "inline-block" }}
+        onClick={handleClick}
+      >
+        Show
+      </button>
+      {showCountry && <CountryDetail country={country} />}
+    </div>
+  );
+};
+
 const Countries = ({ countries }) => {
   let result;
 
@@ -28,7 +55,7 @@ const Countries = ({ countries }) => {
     result = "Too many matches, please narrow down the query!";
   } else if (countries.length <= 10) {
     result = countries.map((country) => (
-      <p key={country.name.common}>{country.name.common}</p>
+      <CountryWithButton key={country.name.common} country={country} />
     ));
   }
 
