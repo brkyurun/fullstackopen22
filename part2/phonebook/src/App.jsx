@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
+import Notification from "./components/Notification";
 import personService from "./services/persons";
+import "./index.css";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -10,6 +12,9 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
   const [filtered, setFiltered] = useState([]);
+  const [showNotification, setShowNotification] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     personService.getPersons().then((persons) => {
@@ -41,24 +46,47 @@ const App = () => {
       )
     ) {
       const personId = persons.find((person) => person.name === newName).id;
-      personService.updateNumber(personId, newPerson).then((updatedPerson) => {
-        console.log(updatedPerson);
-        setPersons(
-          persons.map((person) =>
-            person.name === newPerson.name
-              ? { ...person, name: newName, number: newNumber }
-              : person
-          )
-        );
-        setNewName("");
-        setNewNumber("");
-      });
+      personService
+        .updateNumber(personId, newPerson)
+        .then((updatedPerson) => {
+          setShowNotification((val) => !val);
+          setSuccessMessage(`Successfully updated ${updatedPerson.name}`);
+          setTimeout(() => {
+            setShowNotification((val) => !val);
+            setSuccessMessage("");
+          }, 3000);
+          setPersons(
+            persons.map((person) =>
+              person.name === newPerson.name
+                ? { ...person, name: newName, number: newNumber }
+                : person
+            )
+          );
+          setNewName("");
+          setNewNumber("");
+        })
+        .catch((error) => {
+          setErrorMessage(
+            `the person '${newPerson.name}' was already deleted from server`
+          );
+          setPersons(persons.filter((person) => person.id !== personId));
+          setTimeout(() => {
+            setShowNotification((val) => !val);
+            setErrorMessage("");
+          }, 3000);
+        });
       return;
     } else if (!nameExists) {
       personService.addPerson(newPerson).then((addedPerson) => {
         setPersons(persons.concat(addedPerson));
         setNewName("");
         setNewNumber("");
+        setShowNotification((val) => !val);
+        setSuccessMessage(`Successfully added ${newPerson.name}`);
+        setTimeout(() => {
+          setShowNotification((val) => !val);
+          setSuccessMessage("");
+        }, 3000);
       });
     }
   };
@@ -81,6 +109,12 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      {showNotification && (
+        <Notification
+          message={successMessage !== "" ? successMessage : errorMessage}
+          type={successMessage !== "" ? "success" : "failure"}
+        />
+      )}
       <Filter onChange={handleFilterChange} />
       <h2>Add a new</h2>
       <PersonForm
