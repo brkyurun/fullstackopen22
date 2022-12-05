@@ -4,6 +4,7 @@ import axios from "axios";
 const CountryDetail = ({ country, isVisible }) => {
   const [weather, setWeather] = useState({});
   const languages = Object.values(country.languages);
+  const [isLoading, setIsLoading] = useState(true);
 
   if (isVisible) {
     axios
@@ -12,10 +13,17 @@ const CountryDetail = ({ country, isVisible }) => {
           country.capital
         }&units=metric&appid=${import.meta.env.VITE_WEATHER_API_KEY}`
       )
-      .then((res) => setWeather(res.data));
+      .then((res) => {
+        setWeather(res.data);
+        setIsLoading(false);
+      });
   }
 
-  if (Object.keys(weather).length !== 0) {
+  if (isLoading) {
+    return <div>loading...</div>;
+  }
+
+  if (Object.keys(weather).length !== 0 && !isLoading) {
     return (
       <div>
         <h1>{country.name.common}</h1>
@@ -87,7 +95,7 @@ const Countries = ({ countries }) => {
 const App = () => {
   const [query, setQuery] = useState("");
   const [countries, setCountries] = useState([]);
-  const [filteredCountries, setFilteredCOuntries] = useState([]);
+  const [filteredCountries, setFilteredCountries] = useState([]);
 
   useEffect(() => {
     axios.get("https://restcountries.com/v3.1/all").then((res) => {
@@ -99,7 +107,7 @@ const App = () => {
     const filtered = countries.filter((country) =>
       country.name.common.toLowerCase().includes(query.toLowerCase())
     );
-    setFilteredCOuntries(filtered);
+    setFilteredCountries(filtered);
   }, [query]);
 
   const handleQueryChange = (e) => {
