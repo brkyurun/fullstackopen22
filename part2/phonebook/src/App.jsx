@@ -28,22 +28,39 @@ const App = () => {
   const handleFormSubmit = (e) => {
     e.preventDefault();
 
-    const nameExists = persons.some((person) => person.name === newName);
-    if (nameExists) {
-      alert(`${newName} already exists!`);
-      return;
-    }
-
     const newPerson = {
       name: newName,
       number: newNumber,
     };
 
-    personService.addPerson(newPerson).then((addedPerson) => {
-      setPersons(persons.concat(addedPerson));
-      setNewName("");
-      setNewNumber("");
-    });
+    const nameExists = persons.some((person) => person.name === newName);
+    if (
+      nameExists &&
+      confirm(
+        `${newName} is already added to the phonebook, replace the old number with a new one?`
+      )
+    ) {
+      const personId = persons.find((person) => person.name === newName).id;
+      personService.updateNumber(personId, newPerson).then((updatedPerson) => {
+        console.log(updatedPerson);
+        setPersons(
+          persons.map((person) =>
+            person.name === newPerson.name
+              ? { ...person, name: newName, number: newNumber }
+              : person
+          )
+        );
+        setNewName("");
+        setNewNumber("");
+      });
+      return;
+    } else if (!nameExists) {
+      personService.addPerson(newPerson).then((addedPerson) => {
+        setPersons(persons.concat(addedPerson));
+        setNewName("");
+        setNewNumber("");
+      });
+    }
   };
 
   const handleNameChange = (e) => {
