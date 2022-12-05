@@ -54,6 +54,13 @@ const App = () => {
     setNewNumber(e.target.value);
   };
 
+  const handleDelete = (id) => {
+    personService.deletePerson(id).then((response) => {
+      const updatedPersons = persons.filter((person) => person.id !== id);
+      setPersons(updatedPersons);
+    });
+  };
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -67,7 +74,10 @@ const App = () => {
         onNumberChange={handleNumberChange}
       />
       <h2>Numbers</h2>
-      <Persons persons={filter !== "" ? filtered : persons} />
+      <Persons
+        persons={filter !== "" ? filtered : persons}
+        handleDelete={handleDelete}
+      />
     </div>
   );
 };
