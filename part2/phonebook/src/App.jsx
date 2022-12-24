@@ -77,17 +77,40 @@ const App = () => {
         });
       return;
     } else if (!nameExists) {
-      personService.addPerson(newPerson).then((addedPerson) => {
-        setPersons(persons.concat(addedPerson));
-        setNewName("");
-        setNewNumber("");
-        setShowNotification((val) => !val);
-        setSuccessMessage(`Successfully added ${newPerson.name}`);
-        setTimeout(() => {
+      personService
+        .addPerson(newPerson)
+        .then((addedPerson) => {
+          setPersons(persons.concat(addedPerson));
+          setNewName("");
+          setNewNumber("");
           setShowNotification((val) => !val);
-          setSuccessMessage("");
-        }, 3000);
-      });
+          setSuccessMessage(`Successfully added ${newPerson.name}`);
+          setTimeout(() => {
+            setShowNotification((val) => !val);
+            setSuccessMessage("");
+          }, 3000);
+        })
+        .catch((err) => {
+          if (err.response.data.error.includes("name")) {
+            setShowNotification((val) => !val);
+            setErrorMessage(
+              `the name is shorter than 3 characters, please enter a valid name`
+            );
+            setTimeout(() => {
+              setShowNotification((val) => !val);
+              setErrorMessage("");
+            }, 3000);
+          } else if (err.response.data.error.includes("number")) {
+            setShowNotification((val) => !val);
+            setErrorMessage(`
+              please input a phone number like 22-223131 or 223-535235
+            `);
+            setTimeout(() => {
+              setShowNotification((val) => !val);
+              setErrorMessage("");
+            }, 3000);
+          }
+        });
     }
   };
 
