@@ -15,7 +15,7 @@ const blogSchema = new mongoose.Schema({
 const Blog = mongoose.model("Blog", blogSchema);
 
 const mongoUrl =
-  "mongodb+srv://fullstack:c9glZ8sZZyjYNDxv@cluster0.mz8qqcn.mongodb.net/?retryWrites=true&w=majority";
+  "mongodb+srv://fullstack:c9glZ8sZZyjYNDxv@cluster0.mz8qqcn.mongodb.net/blogList?retryWrites=true&w=majority";
 mongoose.connect(mongoUrl);
 
 app.use(cors());
