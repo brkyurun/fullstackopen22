@@ -1,9 +1,11 @@
 // eslint-disable-next-line no-unused-vars
 const http = require("http");
 const express = require("express");
+const dotenv = require("dotenv").config();
 const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
+const MONGO_URI = process.env.MONGODB_URI;
 
 const blogSchema = new mongoose.Schema({
   title: String,
@@ -14,9 +16,8 @@ const blogSchema = new mongoose.Schema({
 
 const Blog = mongoose.model("Blog", blogSchema);
 
-const mongoUrl =
-  "mongodb+srv://fullstack:@cluster0.mz8qqcn.mongodb.net/blogList?retryWrites=true&w=majority";
-mongoose.connect(mongoUrl);
+const mongoUrl = MONGO_URI;
+mongoose.connect(mongoUrl).then(() => console.log("Connected to DB!"));
 
 app.use(cors());
 app.use(express.json());
