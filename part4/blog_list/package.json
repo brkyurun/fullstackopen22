@@ -6,7 +6,11 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "jest --verbose"
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "author": "Berkay Urun",
   "license": "MIT",
