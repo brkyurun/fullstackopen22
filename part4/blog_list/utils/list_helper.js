@@ -12,8 +12,31 @@ const favoriteBlog = (blogs) => {
   return result;
 };
 
+const mostBlogs = (blogs) => {
+  const authorNamesCount = {};
+  for (const blog of blogs) {
+    if (authorNamesCount[blog.author]) {
+      authorNamesCount[blog.author]++;
+    } else {
+      authorNamesCount[blog.author] = 1;
+    }
+  }
+
+  const authorWithMostBlogs = Object.entries(authorNamesCount)
+    .sort((prev, curr) => prev[1] - curr[1])
+    .pop();
+
+  const result = {
+    author: authorWithMostBlogs[0],
+    blogs: authorWithMostBlogs[1],
+  };
+
+  return result;
+};
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
+  mostBlogs,
 };

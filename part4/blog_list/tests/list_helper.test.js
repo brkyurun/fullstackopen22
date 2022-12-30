@@ -87,3 +87,19 @@ describe("favorite blog", () => {
     expect(result).toEqual(blogs[2]);
   });
 });
+
+describe("author with most blogs", () => {
+  test("returns an object", () => {
+    const result = listHelper.mostBlogs(blogs);
+    expect(result).toBeInstanceOf(Object);
+  });
+
+  test("returns the author with most blogs", () => {
+    const result = listHelper.mostBlogs(blogs);
+    const expectedResult = {
+      author: "Robert C. Martin",
+      blogs: 3,
+    };
+    expect(result).toEqual(expectedResult);
+  });
+});
